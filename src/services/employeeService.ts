@@ -2,27 +2,39 @@ import { getRepository } from "typeorm";
 
 import Employee from "../entities/Employee";
 
-export async function postEmployee () {
-  const users = await getRepository(Employee).create;
+export async function postEmployee (employeeInfos: Employee) {
+  const users = await getRepository(Employee).insert(employeeInfos)
   
   return users;
 }
 
 export async function getEmployees () {
-  const users = await getRepository(Employee).find();
+  const employees = await getRepository(Employee).find();
   
-  return users;
+  return employees;
 }
 
-export async function getEmployeeById () {
-  const user = await getRepository(Employee).find({select: ["id"]});
-  
-  return user;
+export async function putEmployees (employeeInfos: Employee, id: number) {
+  const employees = await getRepository(Employee)
+    .createQueryBuilder()
+    .update(Employee)
+    .set({ 
+      name: employeeInfos.name, 
+      email: employeeInfos.email,
+      gender: employeeInfos.gender,
+      cpf: employeeInfos.cpf,
+      birthdate: employeeInfos.birthdate,
+      startdate: employeeInfos.startdate,
+      team: employeeInfos.team
+    })
+    .where("id = :id", { id: id })
+    .execute();
+
+  return employees;
 }
 
-
-export async function deleteEmployees () {
-  const users = await getRepository(Employee).find({select: ["id"]});
+export async function deleteEmployees (id: number) {
+  const users = await getRepository(Employee).delete({id: id});
   
   return users;
 }
