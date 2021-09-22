@@ -34,6 +34,21 @@ describe("POST /", () => {
     expect(response.status).toBe(200);
   });
 
+  it("should answer status 400", async () => {
+    const employeeBody: EmployeeData = {
+      name: "test",
+      email: "000",
+      gender: "none",
+      cpf: "12345678910",
+      birthdate: "01/01/1990",
+      startdate: "10/2020",
+      team: "front-end"
+    }
+
+    const response = await supertest(app).post("/nutemployee").send(employeeBody);
+    expect(response.status).toBe(400);
+  });
+
 });
 
 describe("GET /", () => {
