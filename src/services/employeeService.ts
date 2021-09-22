@@ -3,9 +3,9 @@ import { getRepository } from "typeorm";
 import Employee from "../entities/Employee";
 
 export async function postEmployee (employeeInfos: Employee) {
-  const users = await getRepository(Employee).insert(employeeInfos)
+  const employee = await getRepository(Employee).insert(employeeInfos)
   
-  return users;
+  return employee;
 }
 
 export async function getEmployees () {
